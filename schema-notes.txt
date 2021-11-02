@@ -1,0 +1,335 @@
+/*
+	Use case: Classes are objects.
+
+	1. Classes are also objects. They can be used in all the same places and with the same methods as objects.
+	2. Classes utilize the same generic structure and fields as objects.
+		a. They can be created, displayed, modified, and destroyed.
+
+	Use case: Creating an object given the class name.
+
+	1. Retrieve the class schema from the class dictionary.
+	2. Allocate a dictionary to hold the elements of the object.
+	3. For each element in the class definition:
+		a. If the element holds a built-in type, create builtin and initialize with the default value.
+		b. If the element holds an object type, intialize to null / create an object of the defined class.
+		c. Store value in dictionary using element name as key.
+	4. Add the object to the object dictionary.
+	5. If the object is a class schema, add a reference to the class dictionary.
+
+
+	Use case: Modifying an object element.
+
+	1. Parse the element in the name path by '/' characters.
+	2. If there is more than one element:
+		a. Locate the value stored in the first element, treat as an object value, and dereference.
+		b. Recursively modify by passing the remaining name path elements and the new object to the modify function.
+	3. If there is only one element in the name path:
+		a. Retrieve the class schema for the object.
+		a. Verify that the desired value matches the appropriate class for its element.
+		a. Retrieve the value in the object referred to by that element name and release.
+		b. Store the new value using the element name as a key. 
+
+
+	Use case: Displaying object contents.
+
+	1. At top call, set indentation level to zero.
+	2. For each element in the object:
+		a. Look up the element class schema.
+		b. If the element represents a built-in type, display according to the format specifier of the type.
+		c. If the element represents an object, increment the indentation level and display the object.
+
+*/
+
+/*
+
+Object schema
+
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "object-model-schema-1-0-0",
+	"title": "Object model schema",
+	"description": "",
+	"properties":
+	{
+		"classKey":
+		{
+			"$comment": "This is a string prefixed with 'class-name:' which represents a key to the class dictionary.",
+			"type": "string",
+			"pattern": "^class-name:.+"
+		},
+		"objectId":
+		{
+			"$comment": "This is a string prefixed with 'object-uuid:' which represents a key to the object dictionary.",
+			"type": "string",
+			"pattern": "^object-uuid:.+"
+		},
+		"instanceVariables":
+		{
+			"$comment": "This is a dictionary which contains entries indexed by the named elements of the object.",
+			"type": "object",
+			"propertyNames":
+			{
+				".comment": "Element names may contain letters, numbers, and underscores.",
+				"pattern": "^[a-zA-Z0-9_]+$"
+			},
+			"patternProperties":
+			{
+				"^.*":
+				{
+					".comment": "Named elements may be of any value type.",
+					"$ref": "#/$defs/value-types"
+				}
+			},
+			"additionalProperties": false
+		},
+		"indexVariables":
+		{
+			"$comment": "This is an array which contains sequential, unamed entries of the object.",
+			"type": "array",
+			"items":
+			{
+				".comment": "Sequential elements may be of any value type.",
+				"$ref": "#/$defs/value-types"
+			}
+		}
+	},
+	"additionalProperties": false,
+	"required": [ "classKey", "objectId" ],
+
+	$defs:
+	{
+		"string-metadata":
+		{
+			"$comment": "A string is a generic character string. Its metadata sets limits on its minimum and maximum length.",
+			"type": "string",
+			"pattern": "^string-metadata:((minLength=[0-9]+)?:(maxLength=[0-9]+)?:(formatSpecifier=%.*)?)?"
+		},
+		"content-media-metadata":
+		{
+			"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
+			"type": "string",
+			"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_-\+\.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?"
+		},
+		"number-metadata":
+		{
+			"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
+			"type": "string",
+			"pattern": "^number-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(multiple=[0-9]+)?:(formatSpecifier=%.*)?)?"
+		},
+		"integer-metadata":
+		{
+			"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+			"type": "string",
+			"pattern": "^integer-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(formatSpecifier=%.*)?)?"
+		},
+		"string-types":
+		{
+			anyOf:
+			[
+				{
+					"$comment": "These are specially strings specially tagged as object types to differentiate them from generic strings.",
+					"type": "string",
+					"pattern": "^((class-name)|(object-uuid)|(array-uuid)|(general-string)|(date-time)|(time)|(date)|(duration)|(email)|(idn-email)|(hostname)|(idn-hostname)|(ipv4)|(ipv6)|(uuid)|(uri)|(uri-reference)|(iri)|(iri-reference)|(uri-template)|(json-pointer)|(relative-json-pointer)|(regex)|(content-media)):.*"
+				},
+				{
+					"$comment": "A boolean string consists of binary truth valued strings: true/false, yes/no, on/off, valid/invalid.",
+					"type": "string",
+					"pattern": "^boolean:(([tT][rR][uU][eE])|([fF][aA][lL][sS][eE])|([yY][eE][sS])|([nN][oO])|([oO][nN])|([oO][fF][fF])|(([iI][nN])?[vV][aA][lL][iI][dD]))$"
+				},
+				{
+					"$comment": "An (decimal) integer string represents a printable, base 10 integer.",
+					"type": "string",
+					"pattern": "^integer:[+-]?[0-9]+$"
+				},
+				{
+					"$comment": "A hexadecimal integer string represents a printable, base 16 integer.",
+					"type": "string",
+					"pattern": "^hexadecimal-integer:((0[xX])|#)?[0-9a-fA-F]+$"
+				},
+				{
+					"$comment": "A octal integer string represents a printable, base 8 integer.",
+					"type": "string",
+					"pattern": "^octal-integer:(([\\]?0+[0-7]+)|((0[oO])+[0-7]+))$"
+				},
+				{
+					"$comment": "A binary integer string represents a printable, base 2 integer.",
+					"type": "string",
+					"pattern": "^binary-integer:(((0?[bB])?[01]+)|([01]+[bB]?))$"
+				},
+				{
+					"$comment": "A number string represents a printable, floating point number.",
+					"type": "string",
+					"pattern": "^number:[-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?$"
+				},
+				{
+					"$comment": "A null string represents a void data type.",
+					"type": "string",
+					"pattern": "^null:$"
+				}
+			]
+		},
+		"non-string-types":
+		{
+			"$comment": "Catch all non-container types that are not represented by character strings.",
+			"type": [ "null", "boolean", "number", "integer" ]
+		},
+		"container-types":
+		{
+			"$comment": "Catch all container types, i.e., arrays and dictionaries.",
+			"type": [ "object", "array" ]
+		},
+		"value-types":
+		{
+			"$comment": "Catch all non-container types excluding non-tagged strings.",
+			"anyOf":
+			[
+				{ "$ref": "#/$defs/string-types" },
+				{ "$ref": "#/$defs/non-string-types" }
+			],
+			"not": { "$ref": "#/$defs/container-types" }
+		}
+	}
+}
+
+Class-as-object schema
+
+{
+	"$schema": "object-model-schema-1-0-0",
+	"$id": "object-model-schema-for-classes-1-0-0",
+	"properties":
+	{
+		"instanceVariables":
+		{
+			"patternProperties":
+			{
+				"^.*":
+				{
+					"$comment": "Named variables of class objects must define class/builtin names and associated metadata.",
+					{
+						"type": "string",
+						"pattern": "^((class-name)|(object-uuid)|(array-uuid)):.*"
+					}
+				}
+			}
+		},
+		"not":
+		{
+			"$comment": "Class objects may not contain sequential index variables.",
+			"$ref": "$schema/properties/indexVariables"
+		}
+	},
+	"required": [ { "$ref": "$schema/properties/instanceVariables" } ],
+}
+
+Built-in types metadata schemas
+
+*/
+
+/*
+	Object attributes:
+		* Class Key.
+				This is a key to the schema dictionary. The schema object
+				referenced by this key defines the metadata/characteristics of
+				the object elements.
+
+		* Object ID.
+				This is a key to the object dictionary that contains the object.
+				A reference to this object may be retrieved from the object
+				dictionary using this key.
+
+		* Type-specific Fields. (Should this be a sub-dictionary for named elements? Should this be a sub-array for indexed elements?)
+				Each object contains zero or more elements. A element may be
+				referenced by a unique name. (Unnamed elements are referenced
+				by index number? Can elements be unnamed?)
+
+				All elements contain strings representing the nature and value
+				of the element. Each string contains a prefix that denotes
+				how the string value should be interpreted. The following table
+				shows the relationship between the prefix and the
+				interpretation:
+
+				Prefix            Interpretation
+				======            ==============
+				"null:"           The element contains a null value. Any
+				                  following characters are ignored.
+				"string:"         The element contains a string value. The
+				                  following characters are interpreted as a
+								  string.
+				"number:"         The element contains a numeric value. The
+				                  following characters are interpreted as a
+								  number either integer or floating-point.
+				"boolean:"        The element contains a string value. The
+				                  following characters are interpreted as a
+								  boolean either true/false, yes/no, or on/off.
+				"object-key:"     The element represents a key into the object
+				                  dictionary. The following characters are
+								  suitable for implementation-specific
+								  conversion and use for retrieving an object
+								  reference from the object dictionary.
+				"type-key:"       The element represents a prefix string from
+				                  this table or a key into the schema dictionary.
+*/
+
+// sample object0 of type0
+{
+    "$schema": "type-dictionary://type0",
+    "$id": "object-dictionary://object0",
+
+	"type0-field0" : "string:any string here",
+	"type0-field1" : "number:any number here (integer, floating-point)",
+	"type0-field2" : "boolean:any true/false, yes/no, on/off here",
+	"type0-field3" : "object:key-for-object-dictionary-here (object type determined by schema for type0)",
+	"type0-field4" : "null:(no value here)",
+	...
+	"type0-fieldN-1" : ...
+}
+
+// sample schema of type0
+{
+    "$schema": "type-dictionary://metatype0",
+    "$id": "object-dictionary://object-metatype0",
+
+	"metadata-field0" : "object:object-dictionary-key-to-field0-metadata-object"
+	"metadata-field1" : "object:object-dictionary-key-to-field1-metadata-object"
+	...
+	"metadata-fieldN-1" : "object:object-dictionary-key-to-fieldN-1-metadata-object"
+}
+
+// schema for string metadata
+{
+    "$schema": "type-dictionary://metatype0",
+    "$id": "object-dictionary://metatype0-string-metadata-schema-object",
+
+	// Here is a name conflict with the element names for this object
+    "$schema": "type-prefix:string:",
+    "$id": "type-prefix:string:",
+
+	"type-prefix" : "type-prefix:string:",
+	"minimnum-length" : "type-prefix:number:",
+	"maximum-length" : "type-prefix:number:",
+	"default" : "type-prefix:string:"
+}
+
+// metadata object for field0 string
+{
+    "$schema": "type-dictionary://schema-for-string-metadata",
+    "$id": "object-dictionary://object-id-for-string-metadata",
+
+	"type-prefix" : "string:string",
+	"minimnum-length" : "number:0",
+	"maximum-length" : "number:INF",
+	"default" : "string:"
+}
+
+// metadata schema for numbers
+{
+}
+
+// metadata schema for booleans
+{
+}
+
+// metadata schema for object keys
+{
+}
+

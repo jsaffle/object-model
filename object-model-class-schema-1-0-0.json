@@ -1,0 +1,27 @@
+{
+	"$schema": "object-model-schema-1-0-0",
+	"$id": "object-model-schema-for-classes-1-0-0",
+	"properties":
+	{
+		"instanceVariables":
+		{
+			"patternProperties":
+			{
+				"^.*":
+				{
+					"$comment": "Named variables of class objects must define class/builtin names and associated metadata.",
+					{
+						"type": "string",
+						"pattern": "^((class-name)|(object-uuid)|(array-uuid)):.*"
+					}
+				}
+			}
+		},
+		"not":
+		{
+			"$comment": "Class objects may not contain sequential index variables.",
+			"$ref": "$schema/properties/indexVariables"
+		}
+	},
+	"required": [ { "$ref": "$schema/properties/instanceVariables" } ],
+}

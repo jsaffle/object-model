@@ -1,0 +1,146 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "object-model-schema-1-0-0",
+	"title": "Object model schema",
+	"description": "",
+	"properties":
+	{
+		"classKey":
+		{
+			"$comment": "This is a string prefixed with 'class-name:' which represents a key to the class dictionary.",
+			"type": "string",
+			"pattern": "^class-name:.+"
+		},
+		"objectId":
+		{
+			"$comment": "This is a string prefixed with 'object-uuid:' which represents a key to the object dictionary.",
+			"type": "string",
+			"pattern": "^object-uuid:.+"
+		},
+		"instanceVariables":
+		{
+			"$comment": "This is a dictionary which contains entries indexed by the named elements of the object.",
+			"type": "object",
+			"propertyNames":
+			{
+				".comment": "Element names may contain letters, numbers, and underscores.",
+				"pattern": "^[a-zA-Z0-9_]+$"
+			},
+			"patternProperties":
+			{
+				"^.*":
+				{
+					".comment": "Named elements may be of any value type.",
+					"$ref": "#/$defs/value-types"
+				}
+			},
+			"additionalProperties": false
+		},
+		"indexVariables":
+		{
+			"$comment": "This is an array which contains sequential, unamed entries of the object.",
+			"type": "array",
+			"items":
+			{
+				".comment": "Sequential elements may be of any value type.",
+				"$ref": "#/$defs/value-types"
+			}
+		}
+	},
+	"additionalProperties": false,
+	"required": [ "classKey", "objectId" ],
+
+	$defs:
+	{
+		"string-metadata":
+		{
+			"$comment": "A string is a generic character string. Its metadata sets limits on its minimum and maximum length.",
+			"type": "string",
+			"pattern": "^string-metadata:((minLength=[0-9]+)?:(maxLength=[0-9]+)?:(formatSpecifier=%.*)?)?"
+		},
+		"content-media-metadata":
+		{
+			"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
+			"type": "string",
+			"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_-\+\.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?"
+		},
+		"number-metadata":
+		{
+			"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
+			"type": "string",
+			"pattern": "^number-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(multiple=[0-9]+)?:(formatSpecifier=%.*)?)?"
+		},
+		"integer-metadata":
+		{
+			"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+			"type": "string",
+			"pattern": "^integer-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(formatSpecifier=%.*)?)?"
+		},
+		"string-types":
+		{
+			anyOf:
+			[
+				{
+					"$comment": "These are specially strings specially tagged as object types to differentiate them from generic strings.",
+					"type": "string",
+					"pattern": "^((class-name)|(object-uuid)|(array-uuid)|(general-string)|(date-time)|(time)|(date)|(duration)|(email)|(idn-email)|(hostname)|(idn-hostname)|(ipv4)|(ipv6)|(uuid)|(uri)|(uri-reference)|(iri)|(iri-reference)|(uri-template)|(json-pointer)|(relative-json-pointer)|(regex)|(content-media)):.*"
+				},
+				{
+					"$comment": "A boolean string consists of binary truth valued strings: true/false, yes/no, on/off, valid/invalid.",
+					"type": "string",
+					"pattern": "^boolean:(([tT][rR][uU][eE])|([fF][aA][lL][sS][eE])|([yY][eE][sS])|([nN][oO])|([oO][nN])|([oO][fF][fF])|(([iI][nN])?[vV][aA][lL][iI][dD]))$"
+				},
+				{
+					"$comment": "An (decimal) integer string represents a printable, base 10 integer.",
+					"type": "string",
+					"pattern": "^integer:[+-]?[0-9]+$"
+				},
+				{
+					"$comment": "A hexadecimal integer string represents a printable, base 16 integer.",
+					"type": "string",
+					"pattern": "^hexadecimal-integer:((0[xX])|#)?[0-9a-fA-F]+$"
+				},
+				{
+					"$comment": "A octal integer string represents a printable, base 8 integer.",
+					"type": "string",
+					"pattern": "^octal-integer:(([\\]?0+[0-7]+)|((0[oO])+[0-7]+))$"
+				},
+				{
+					"$comment": "A binary integer string represents a printable, base 2 integer.",
+					"type": "string",
+					"pattern": "^binary-integer:(((0?[bB])?[01]+)|([01]+[bB]?))$"
+				},
+				{
+					"$comment": "A number string represents a printable, floating point number.",
+					"type": "string",
+					"pattern": "^number:[-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?$"
+				},
+				{
+					"$comment": "A null string represents a void data type.",
+					"type": "string",
+					"pattern": "^null:$"
+				}
+			]
+		},
+		"non-string-types":
+		{
+			"$comment": "Catch all non-container types that are not represented by character strings.",
+			"type": [ "null", "boolean", "number", "integer" ]
+		},
+		"container-types":
+		{
+			"$comment": "Catch all container types, i.e., arrays and dictionaries.",
+			"type": [ "object", "array" ]
+		},
+		"value-types":
+		{
+			"$comment": "Catch all non-container types excluding non-tagged strings.",
+			"anyOf":
+			[
+				{ "$ref": "#/$defs/string-types" },
+				{ "$ref": "#/$defs/non-string-types" }
+			],
+			"not": { "$ref": "#/$defs/container-types" }
+		}
+	}
+}
