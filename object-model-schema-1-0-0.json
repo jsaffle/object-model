@@ -50,7 +50,7 @@
 	"additionalProperties": false,
 	"required": [ "classKey", "objectId" ],
 
-	$defs:
+	"$defs":
 	{
 		"string-metadata":
 		{
@@ -62,7 +62,7 @@
 		{
 			"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
 			"type": "string",
-			"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_-\+\.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?"
+			"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_-+.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?"
 		},
 		"number-metadata":
 		{
@@ -78,7 +78,7 @@
 		},
 		"string-types":
 		{
-			anyOf:
+			"anyOf":
 			[
 				{
 					"$comment": "These are specially strings specially tagged as object types to differentiate them from generic strings.",
