@@ -1,6 +1,6 @@
 {
-	"$schema": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema-1-0-0.json",
-	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema-for-classes-1-0-0.json",
+	"$schema": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema.json",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema-for-classes.json",
 	"properties":
 	{
 		"instanceVariables":
