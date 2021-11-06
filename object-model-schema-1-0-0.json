@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	"$id": "object-model-schema-1-0-0",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema-1-0-0.json",
 	"title": "Object model schema",
 	"description": "",
 	"properties":
