@@ -33,7 +33,7 @@
 			}
 		}
 	},
-	"required": [ { "$ref": "instanceVariables" } ],
+	"required": [ "instanceVariables" ],
 	"not":
 	{
 		"$comment": "Class objects may not contain sequential index variables.",
