@@ -1,8 +1,23 @@
 {
-	"$schema": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema.json",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema-class-schema.json",
+
+	"allOf":
+	[
+		{
+			"$comment": "ClassDefinition is an object. Include the object-model-schema",
+			"$ref": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema.json"
+		}
+	],
+    
 	"properties":
 	{
+		"classKey":
+		{
+			"$comment": "Class definitions have the class ClassDefinition.",
+			"type": "string",
+			"pattern": "^class-name:ClassDefinition$"
+		},
 		"instanceVariables":
 		{
 			"patternProperties":
@@ -16,12 +31,12 @@
 					}
 				}
 			}
-		},
-		"not":
-		{
-			"$comment": "Class objects may not contain sequential index variables.",
-			"$ref": "$schema/properties/indexVariables"
 		}
 	},
-	"required": [ { "$ref": "$schema/properties/instanceVariables" } ],
+	"required": [ { "$ref": "instanceVariables" } ],
+	"not":
+	{
+		"$comment": "Class objects may not contain sequential index variables.",
+		"required": [ "indexVariables" ]
+	}
 }
