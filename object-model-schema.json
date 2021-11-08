@@ -52,29 +52,46 @@
 
 	"$defs":
 	{
-		"string-metadata":
+		"metadata-types":
 		{
-			"$comment": "A string is a generic character string. Its metadata sets limits on its minimum and maximum length.",
-			"type": "string",
-			"pattern": "^string-metadata:((minLength=[0-9]+)?:(maxLength=[0-9]+)?:(formatSpecifier=%.*)?)?"
-		},
-		"content-media-metadata":
-		{
-			"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
-			"type": "string",
-			"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_-+.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?"
-		},
-		"number-metadata":
-		{
-			"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
-			"type": "string",
-			"pattern": "^number-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(multiple=[0-9]+)?:(formatSpecifier=%.*)?)?"
-		},
-		"integer-metadata":
-		{
-			"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
-			"type": "string",
-			"pattern": "^integer-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(formatSpecifier=%.*)?)?"
+			"anyOf":
+			[
+				{
+					"$comment": "",
+					"type": "string",
+					"pattern": "^boolean(-string)?-metadata:(default=(([tT][rR][uU][eE])|([fF][aA][lL][sS][eE])|([yY][eE][sS])|([nN][oO])|([oO][nN])|([oO][fF][fF])|(([iI][nN])?[vV][aA][lL][iI][dD])))?:(formatSpecifier=%.*)?"
+				},
+				{
+					"$comment": "",
+					"type": "string",
+					"pattern": "^integer(-string)?-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(radix=(bin|oct|dec|hex))?:(formatSpecifier=%.*)?)?"
+				},
+				{
+					"$comment": "",
+					"type": "string",
+					"pattern": "^null(-string)?-metadata:(formatSpecifier=%.*)?"
+				},
+				{
+					"$comment": "A string is a generic character string. Its metadata sets limits on its minimum and maximum length.",
+					"type": "string",
+					"pattern": "^string-metadata:((minLength=[0-9]+)?:(maxLength=[0-9]+)?:(formatSpecifier=%.*)?)?"
+				},
+				{
+					"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
+					"type": "string",
+					"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_\\-+.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?"
+				},
+				{
+					"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
+					"type": "string",
+					"pattern": "^number-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(multiple=[0-9]+)?:(formatSpecifier=%.*)?)?"
+				},
+				{
+					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"type": "string",
+					"pattern": "^integer-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(formatSpecifier=%.*)?)?"
+				}
+			]
 		},
 		"string-types":
 		{
@@ -137,6 +154,7 @@
 			"$comment": "Catch all non-container types excluding non-tagged strings.",
 			"anyOf":
 			[
+				{ "$ref": "#/$defs/metadata-types" },
 				{ "$ref": "#/$defs/string-types" },
 				{ "$ref": "#/$defs/non-string-types" }
 			],
