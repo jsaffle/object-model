@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema-class-schema.json",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-class-schema.json",
 
 	"allOf":
 	[
@@ -9,7 +9,7 @@
 			"$ref": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema.json"
 		}
 	],
-    
+	
 	"properties":
 	{
 		"classKey":
@@ -24,19 +24,27 @@
 			{
 				"^.*":
 				{
-					"$comment": "Named variables of class objects must define class/builtin names and associated metadata.",
-					{
-						"type": "string",
-						"pattern": "^((class-name)|(object-uuid)|(array-uuid)):.*"
-					}
+					"anyOf":
+					[
+						{
+							"$comment": "Named variables of class objects must define class/builtin names and associated metadata.",
+							"type": "string",
+							"pattern": "^((class-name)|(object-uuid)|(array-uuid)):.*"
+						},
+						{
+							"$ref": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema.json#/$defs/metadata-types"
+						}
+					]
 				}
 			}
+		},
+		"indexVariables":
+		{
+			"items":
+			{
+				".comment": "Sequential elements may be of any metadata type.",
+				"$ref": "https://raw.githubusercontent.com/jsaffle/object-model/main/object-model-schema.json#/$defs/metadata-types"
+			}
 		}
-	},
-	"required": [ "instanceVariables" ],
-	"not":
-	{
-		"$comment": "Class objects may not contain sequential index variables.",
-		"required": [ "indexVariables" ]
 	}
 }
