@@ -1,0 +1,13 @@
+{
+	"classKey": "class-name:ClassDefinition",
+	"objectId": "object-uuid:f",
+    "instanceVariables":
+    {
+    	"foo_object": "class-name:footype",
+		"foo_integer_string": "boolean-metadata:default=true:"
+    },
+	"indexVariables":
+    [
+        "boolean-string-metadata:default=false:"
+	]
+}
