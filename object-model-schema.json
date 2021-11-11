@@ -57,19 +57,19 @@
 			"anyOf":
 			[
 				{
-					"$comment": "",
+					"$comment": "Metadata that describes a boolean type including value default and format specifier",
 					"type": "string",
 					"pattern": "^boolean(-string)?-metadata(:default=(([tT][rR][uU][eE])|([fF][aA][lL][sS][eE])|([yY][eE][sS])|([nN][oO])|([oO][nN])|([oO][fF][fF])|(([iI][nN])?[vV][aA][lL][iI][dD])))?(:formatSpecifier=%.*)?$"
 				},
 				{
-					"$comment": "",
+					"$comment": "Metadata that describes a null type including format specifier",
 					"type": "string",
 					"pattern": "^null(-string)?-metadata(:formatSpecifier=%.*)?$"
 				},
 				{
-					"$comment": "A string is a generic character string. Its metadata sets limits on its minimum and maximum length.",
+					"$comment": "Metadata that describes a generic string including default value, lower and upper length limits and format specifier.",
 					"type": "string",
-					"pattern": "^string-metadata((:minLength=[0-9]+)?(:maxLength=[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^string-metadata((:default=\".*\")?(:minLength=[0-9]+)?(:maxLength=[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
@@ -77,27 +77,27 @@
 					"pattern": "^content-media-metadata((:mediaType=[a-zA-Z]+/[a-zA-Z0-9_\\-+.]+)?(:encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?(:formatSpecifier=%.*)?)?$"
 				},
 				{
-					"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
+					"$comment": "Metadata that describes a number including default value, range, divisor, and format specifier.",
 					"type": "string",
 					"pattern": "^number(-string)?metadata((:default=([-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:multiple=[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
-					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"$comment": "Metadata that describes a binary integer including default value, range, and format specifier.",
 					"type": "string",
 					"pattern": "^integer(-string)?-metadata(:radix=bin)((:default=(((0?[bB])?[01]+)|([01]+[bB]?)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
-					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"$comment": "Metadata that describes an octal integer including default value, range, and format specifier.",
 					"type": "string",
 					"pattern": "^integer(-string)?-metadata(:radix=oct)((:default=(([\\]?0+[0-7]+)|((0[oO])+[0-7]+)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
-					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"$comment": "Metadata that describes a decimal integer including default value, range, and format specifier.",
 					"type": "string",
-					"pattern": "^integer(-string)?-metadata(:radix=dec)?((:default=(0|([+-]?[1-9][0-9]*)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^integer(-string)?-metadata(:radix=dec)?((:default=(0+|([+-]?[1-9][0-9]*)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
-					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"$comment": "Metadata that describes a hexadecimal integer including default value, range, and format specifier.",
 					"type": "string",
 					"pattern": "^integer(-string)?-metadata(:radix=hex)((:default=((0[xX])|#)?[0-9a-fA-F]+)?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				}
@@ -120,7 +120,7 @@
 				{
 					"$comment": "An (decimal) integer string represents a printable, base 10 integer.",
 					"type": "string",
-					"pattern": "^integer:(0|([+-]?[1-9][0-9]*))$"
+					"pattern": "^(decimal-)?integer:(0+|([+-]?[1-9][0-9]*))$"
 				},
 				{
 					"$comment": "A hexadecimal integer string represents a printable, base 16 integer.",
