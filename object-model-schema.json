@@ -79,27 +79,27 @@
 				{
 					"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
 					"type": "string",
-					"pattern": "^number(-string)?metadata((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:multiple=[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^number(-string)?metadata((:default=([-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:multiple=[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
 					"type": "string",
-					"pattern": "^integer(-string)?-metadata(:radix=bin)((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^integer(-string)?-metadata(:radix=bin)((:default=(((0?[bB])?[01]+)|([01]+[bB]?)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
 					"type": "string",
-					"pattern": "^integer(-string)?-metadata(:radix=oct)((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^integer(-string)?-metadata(:radix=oct)((:default=(([\\]?0+[0-7]+)|((0[oO])+[0-7]+)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
 					"type": "string",
-					"pattern": "^integer(-string)?-metadata(:radix=dec)?((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^integer(-string)?-metadata(:radix=dec)?((:default=(0|([+-]?[1-9][0-9]*)))?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
 					"type": "string",
-					"pattern": "^integer(-string)?-metadata(:radix=hex)((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+					"pattern": "^integer(-string)?-metadata(:radix=hex)((:default=((0[xX])|#)?[0-9a-fA-F]+)?(:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				}
 			]
 		},
@@ -140,7 +140,7 @@
 				{
 					"$comment": "A number string represents a printable, floating point number.",
 					"type": "string",
-					"pattern": "^number:[-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?$"
+					"pattern": "^number:([-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?)$"
 				},
 				{
 					"$comment": "A null string represents a void data type.",
