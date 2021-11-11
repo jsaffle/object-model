@@ -64,32 +64,42 @@
 				{
 					"$comment": "",
 					"type": "string",
-					"pattern": "^integer(-string)?-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(radix=(bin|oct|dec|hex))?:(formatSpecifier=%.*)?)?$"
-				},
-				{
-					"$comment": "",
-					"type": "string",
-					"pattern": "^null(-string)?-metadata:(formatSpecifier=%.*)?$"
+					"pattern": "^null(-string)?-metadata(:formatSpecifier=%.*)?$"
 				},
 				{
 					"$comment": "A string is a generic character string. Its metadata sets limits on its minimum and maximum length.",
 					"type": "string",
-					"pattern": "^string-metadata:((minLength=[0-9]+)?:(maxLength=[0-9]+)?:(formatSpecifier=%.*)?)?$"
+					"pattern": "^string-metadata((:minLength=[0-9]+)?(:maxLength=[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "Content media is a printable string that is specially encoded to represent a variety of binary data types. Its metadata determines how the binary data should be decoded or interpreted.",
 					"type": "string",
-					"pattern": "^content-media-metadata:((mediaType=[a-zA-Z]+/[a-zA-Z0-9_\\-+.]+)?:(encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?:(formatSpecifier=%.*)?)?$"
+					"pattern": "^content-media-metadata((:mediaType=[a-zA-Z]+/[a-zA-Z0-9_\\-+.]+)?(:encoding=(7bit|8bit|binary|quoted-printable|base16|base32|base64))?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "A number is a string of digits optionally including a decimal point and exponent. Its metadata sets limits on its minimum and maximum values and optional divisor.",
 					"type": "string",
-					"pattern": "^number-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(multiple=[0-9]+)?:(formatSpecifier=%.*)?)?$"
+					"pattern": "^number(-string)?metadata((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:multiple=[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				},
 				{
 					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
 					"type": "string",
-					"pattern": "^integer-metadata:((>=?[-]?[0-9]+)?:(<=?[-]?[0-9]+)?:(formatSpecifier=%.*)?)?$"
+					"pattern": "^integer(-string)?-metadata(:radix=bin)((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+				},
+				{
+					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"type": "string",
+					"pattern": "^integer(-string)?-metadata(:radix=oct)((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+				},
+				{
+					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"type": "string",
+					"pattern": "^integer(-string)?-metadata(:radix=dec)?((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
+				},
+				{
+					"$comment": "An integer is a string of digits without decimal point or exponent. Its metadata sets limits on its minimum and maximum values.",
+					"type": "string",
+					"pattern": "^integer(-string)?-metadata(:radix=hex)((:>=?[-]?[0-9]+)?(:<=?[-]?[0-9]+)?(:formatSpecifier=%.*)?)?$"
 				}
 			]
 		},
@@ -110,12 +120,12 @@
 				{
 					"$comment": "An (decimal) integer string represents a printable, base 10 integer.",
 					"type": "string",
-					"pattern": "^integer:[+-]?[0-9]+$"
+					"pattern": "^integer:(0|([+-]?[1-9][0-9]*))$"
 				},
 				{
 					"$comment": "A hexadecimal integer string represents a printable, base 16 integer.",
 					"type": "string",
-					"pattern": "^hexadecimal-integer:((0[xX])|#)?[0-9a-fA-F]+$"
+					"pattern": "^hexadecimal-integer:(((0[xX])|#)?[0-9a-fA-F]+)$"
 				},
 				{
 					"$comment": "A octal integer string represents a printable, base 8 integer.",
@@ -135,7 +145,7 @@
 				{
 					"$comment": "A null string represents a void data type.",
 					"type": "string",
-					"pattern": "^null:$"
+					"pattern": "^null$"
 				}
 			]
 		},
