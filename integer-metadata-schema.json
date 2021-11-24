@@ -1,0 +1,172 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/integer-metadata-schema.json",
+	"title": "Integer type metadata schema",
+	"description": "",
+	"properties":
+	{
+		"metadataPrefix":
+		{
+			"$comment": ".",
+			"const": "integer-metadata"
+		},
+		"valuePrefix":
+		{
+			"$comment": ".",
+			"const": "integer"
+		},
+		"radix":
+		{
+			"$comment": ".",
+			"default": "decimal",
+			"enum": [ "binary", "octal", "decimal", "hexadecimal" ]
+		},
+		"multiple":
+		{
+			"type": "string",
+			"pattern": "^[0-9]+$"
+		},
+		"usePrimitive":
+		{
+			"$comment": "",
+			"type": "boolean",
+			"default": false
+		},
+		"formatSpecifier":
+		{
+			"$comment": "",
+			"type": "string",
+			"pattern": "^%.+$"
+		},
+	},
+	"patternProperties":
+	{
+		"^[<>]=?$":
+		{
+			"type": "string",
+			"pattern": "^[-]?[0-9]+$"
+		}
+	},
+	"additionalProperties": false,
+	"dependencies":
+	{
+		"<":
+		{
+			"not": { "required": [ "<=" ] }
+		},
+		"<=":
+		{
+			"not": { "required": [ "<" ] }
+		},
+		">":
+		{
+			"not": { "required": [ ">=" ] }
+		},
+		">=":
+		{
+			"not": { "required": [ ">" ] }
+		}
+	},
+	"allOf":
+	[
+		{
+			"if":
+			{
+				"properties":
+				{
+					"radix":
+					{
+						"const": "binary"
+					}
+				},
+				"required": [ "radix" ]
+			},
+			"then":
+			{
+				"properties":
+				{
+					"default":
+					{
+						"$comment": ".",
+						"type": "string",
+						"pattern": "^(((0?[bB])?[01]+)|([01]+[bB]?))$"
+					}
+				}
+			}
+		},
+		{
+			"if":
+			{
+				"properties":
+				{
+					"radix":
+					{
+						"const": "octal"
+					}
+				},
+				"required": [ "radix" ]
+			},
+			"then":
+			{
+				"properties":
+				{
+					"default":
+					{
+						"$comment": ".",
+						"type": "string",
+						"pattern": "^(([\\]?0+[0-7]+)|((0[oO])+[0-7]+))$"
+					}
+				}
+			}
+		},
+		{
+			"if":
+			{
+				"properties":
+				{
+					"radix":
+					{
+						"const": "decimal"
+					}
+				}
+			},
+			"then":
+			{
+				"properties":
+				{
+					"default":
+					{
+						"$comment": ".",
+						"type": "string",
+						"pattern": "^(0+|([+-]?[1-9][0-9]*))$"
+					}
+				}
+			}
+		},
+		{
+			"if":
+			{
+				"properties":
+				{
+					"radix":
+					{
+						"const": "hexadecimal"
+					}
+				},
+				"required": [ "radix" ]
+			},
+			"then":
+			{
+				"properties":
+				{
+					"default":
+					{
+						"$comment": ".",
+						"type": "string",
+						"pattern": "^(((0[xX])|#)?[0-9a-fA-F]+)$"
+					}
+				}
+			}
+		}
+	]
+}

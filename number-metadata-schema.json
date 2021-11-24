@@ -1,0 +1,70 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/number-metadata-schema.json",
+	"title": "Number type metadata schema",
+	"description": "",
+	"properties":
+	{
+		"metadataPrefix":
+		{
+			"$comment": ".",
+			"const": "number-metadata"
+		},
+		"valuePrefix":
+		{
+			"$comment": ".",
+			"const": "number"
+		},
+		"default":
+		{
+			"$comment": ".",
+			"type": "string",
+			"pattern": "^([-+]?([0-9]*[.])?[0-9]+([eE][-+]?[0-9]+)?)$"
+		},
+		"multiple":
+		{
+			"type": "string",
+			"pattern": "^[0-9]+$"
+		},
+		"usePrimitive":
+		{
+			"$comment": "",
+			"type": "boolean",
+			"default": false
+		},
+		"formatSpecifier":
+		{
+			"$comment": "",
+			"type": "string",
+			"pattern": "^%.+$"
+		},
+	},
+	"patternProperties":
+	{
+		"^[<>]=?$":
+		{
+			"type": "string",
+			"pattern": "^[-]?[0-9]+$"
+		}
+	},
+	"additionalProperties": false,
+	"dependencies":
+	{
+		"<":
+		{
+			"not": { "required": [ "<=" ] }
+		},
+		"<=":
+		{
+			"not": { "required": [ "<" ] }
+		},
+		">":
+		{
+			"not": { "required": [ ">=" ] }
+		},
+		">=":
+		{
+			"not": { "required": [ ">" ] }
+		}
+	}
+}

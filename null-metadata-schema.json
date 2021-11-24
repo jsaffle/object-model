@@ -1,0 +1,32 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/null-metadata-schema.json",
+	"title": "Null type metadata schema",
+	"description": "",
+	"properties":
+	{
+		"metadataPrefix":
+		{
+			"$comment": ".",
+			"const": "null-metadata"
+		},
+		"valuePrefix":
+		{
+			"$comment": ".",
+			"const": "null"
+		},
+		"usePrimitive":
+		{
+			"$comment": "",
+			"type": "boolean",
+			"default": false
+		},
+		"formatSpecifier":
+		{
+			"$comment": "",
+			"type": "string",
+			"pattern": "^%.+$"
+		},
+	},
+	"additionalProperties": false
+}

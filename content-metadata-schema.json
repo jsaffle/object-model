@@ -1,0 +1,36 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://raw.githubusercontent.com/jsaffle/object-model/main/content-metadata-schema.json",
+	"title": "Content media type metadata schema",
+	"description": "",
+	"properties":
+	{
+		"metadataPrefix":
+		{
+			"$comment": ".",
+			"const": "content-media-metadata"
+		},
+		"valuePrefix":
+		{
+			"$comment": ".",
+			"const": "content-media"
+		},
+		"mediaType":
+		{
+			"type": "string",
+			"pattern": "^[a-zA-Z]+/[a-zA-Z0-9_\\-+.]+$"
+		},
+		"encoding":
+		{
+			"$comment": "",
+			"enum": [ "7bit", "8bit", "binary", "quoted-printable", "base16", "base32", "base64" ]
+		},
+		"formatSpecifier":
+		{
+			"$comment": "",
+			"type": "string",
+			"pattern": "^%.+$"
+		},
+	},
+	"additionalProperties": false
+}
