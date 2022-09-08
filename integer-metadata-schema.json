@@ -21,6 +21,11 @@
 			"default": "decimal",
 			"enum": [ "binary", "octal", "decimal", "hexadecimal" ]
 		},
+		"default":
+		{
+			"$comment": ".",
+			"type": "string",
+		},
 		"multiple":
 		{
 			"type": "string",
@@ -88,7 +93,6 @@
 					"default":
 					{
 						"$comment": ".",
-						"type": "string",
 						"pattern": "^(((0?[bB])?[01]+)|([01]+[bB]?))$"
 					}
 				}
@@ -113,7 +117,6 @@
 					"default":
 					{
 						"$comment": ".",
-						"type": "string",
 						"pattern": "^(([\\]?0+[0-7]+)|((0[oO])+[0-7]+))$"
 					}
 				}
@@ -137,7 +140,6 @@
 					"default":
 					{
 						"$comment": ".",
-						"type": "string",
 						"pattern": "^(0+|([+-]?[1-9][0-9]*))$"
 					}
 				}
@@ -162,8 +164,7 @@
 					"default":
 					{
 						"$comment": ".",
-						"type": "string",
-						"pattern": "^(((0[xX])|#)?[0-9a-fA-F]+)$"
+						"pattern": "^(((0[xX])|#|(\\$))?[0-9a-fA-F]+)$"
 					}
 				}
 			}
