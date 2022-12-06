@@ -24,7 +24,7 @@
 		"default":
 		{
 			"$comment": ".",
-			"type": "string",
+			"type": "string"
 		},
 		"multiple":
 		{
@@ -42,7 +42,7 @@
 			"$comment": "",
 			"type": "string",
 			"pattern": "^%.+$"
-		},
+		}
 	},
 	"patternProperties":
 	{

@@ -26,7 +26,7 @@
 			"$comment": "",
 			"type": "string",
 			"pattern": "^%.+$"
-		},
+		}
 	},
 	"additionalProperties": false
 }
